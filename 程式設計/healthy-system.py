@@ -364,4 +364,4 @@ lost_weight_result.pack()
 
 tk.Button(contain,text='計算去脂體重',command=lost_weight).pack()
 
-def
+contain.mainloop()
