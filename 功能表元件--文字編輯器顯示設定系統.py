@@ -24,7 +24,7 @@ def tool():#工具列
 set.add_checkbutton(label='顯示工具列',variable=define,command=tool)
 
 def c_line():#自動換行模式
-    if define.get==1:
+    if define1.get()==1:
         messagebox.showinfo('自動換行','自動換行已開啟')
     else:
         messagebox.showinfo('自動換行','自動換行已關閉')
@@ -32,7 +32,7 @@ def c_line():#自動換行模式
 set.add_checkbutton(label='自動換行',variable=define1,command=c_line)
 
 def dark():#深色模式
-    if define.get==1:
+    if define2.get()==1:
         messagebox.showinfo('深色模式','深色模式已開啟')
     else:
         messagebox.showinfo('深色模式','深色模式已關閉')
