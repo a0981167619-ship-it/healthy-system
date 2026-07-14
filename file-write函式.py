@@ -19,4 +19,4 @@ file4.writelines(list2)
 
 file4=open('empty.py',mode='r')
 w4=file4.read()
-print(w4)
+print(w4)#印出讀取的文檔內容
