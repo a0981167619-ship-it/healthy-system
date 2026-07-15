@@ -7,4 +7,4 @@ file.truncate(10)#從第10個位置開始截斷
 file.seek(0)
 print('截斷後的檔案文字內容:',file.read())
 
-file.close()
+file.close()#關閉檔案
