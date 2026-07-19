@@ -1,5 +1,14 @@
 import tkinter as tk
 contain=tk.Tk()
+contain.title('健康計算系統')
+label=tk.Label(text='健康計算系統',fg="#0042f7",font=('標楷體',36))
+label.pack(side='top')#位置定位為正上方
+label1=tk.Label(text='Health system',font=('標楷體',24))
+label1.place(anchor='nw')#位置定位為左上角
+label2=tk.Label(text='🦀',font=('標楷體',36),fg="#fd5512")
+label2.place(anchor='sw',relx=0,rely=1)#位置定位為左下角
+label3=tk.Label(text='🦀',font=('標楷體',36),fg="#FF1403")
+label3.place(anchor='se',relx=1,rely=1)#位置定位為右下角
 entry_height=tk.Entry(contain)
 entry_weight=tk.Entry(contain)
 entry_age=tk.Entry(contain)
@@ -9,7 +18,8 @@ entry_waist=tk.Entry(contain)
 entry_butt=tk.Entry(contain)
 entry_agegroup=tk.Entry(contain)
 entry_speed=tk.Entry(contain)
-contain.title('健康計算系統')
+entry_not_fat=tk.Entry(contain)
+entry_BMI=tk.Entry(contain)
 def BMI_count(height,weight):#BMI計算
        BMI=weight/(height/100)**2#身高單位換算為公尺
        return BMI
@@ -90,8 +100,8 @@ def lose_weight(height,weight,G,age):#去脂體重計算:
     age=int(entry_age.get())#輸入年齡
     if G=='男':
        man=1.2*BMI+0.23*age-16.2#男性體脂率
-       lose_w=weight-(weight*man)#男性去脂體重計算
-       return lose_w
+       lose_w1=weight-(weight*man)#男性去脂體重計算
+       return lose_w1
     elif G=='女':
         woman=(1.2*BMI+0.23*age)-5.4#女性體脂率
         lose_w=weight-(weight*woman)#女性去脂體重計算
@@ -340,20 +350,21 @@ normal_weight_result.pack()
 
 tk.Button(contain,text='計算標準體重',command=standard).pack()
 
-def lost_weight():
+def lost_weight():#輸出去脂體重
    try:
       height=float(entry_height.get())
       weight=float(entry_weight.get())
       G=str(entry_gender.get())
       age=int(entry_age.get())
-      BMI=weight/(height/100)**2
-      lost1=lose_weight(height,weight,G,age)
+      BMI=float(entry_BMI.get())
+      lost1=lose_weight(height,weight,G,age,BMI)
       if G=='男':
        lost=1.2*BMI+0.23*age-16.2
        text=weight-(weight*lost)
       elif G=='女':
         lost=(1.2*BMI+0.23*age)-5.4
         text=weight-(weight*lost)
+
         lost_weight_result.config(text='去脂體重為:'+str(round(lost1,2)))
 
    except:
@@ -362,6 +373,43 @@ def lost_weight():
 lost_weight_result=tk.Label(contain,text='去脂體重')
 lost_weight_result.pack()
 
+tk.Label(contain,text='BMI').place(relx=0.7,rely=0.479)
+entry_BMI=tk.Entry(contain)
+entry_BMI.place(relx=0.7,rely=0.5)
+
 tk.Button(contain,text='計算去脂體重',command=lost_weight).pack()
+
+def muscle():
+   try:
+      height=float(entry_height.get())
+      weight=float(entry_weight.get())
+      BMI=weight/(height/100)**2
+      age=int(entry_age.get())
+      G=str(entry_gender.get())
+      not_fat=float(entry_not_fat.get())
+      muscle_meat=(height,weight,BMI,age,G)
+      if G=='男':
+          man=1.2*BMI+0.23*age-16.2#男性體脂率
+          not_fat=weight-(weight*man)#計算無脂肪體重
+          text=not_fat/(height/100)#計算肌肉量
+      elif G=='女':
+          woman=(1.2*BMI+0.23*age)-5.4#女性體脂率
+          not_fat=weight-(weight*woman)#計算無脂肪體重
+          text=not_fat/(height/100)#計算肌肉量
+          
+   except:
+      muscle_result.config(text='請輸入正確數值')
+
+muscle_result=tk.Label(contain,text='肌肉量')
+muscle_result.pack()
+
+tk.Label(contain,text='去脂體重').pack()
+
+entry_not_fat=tk.Entry(contain)
+entry_not_fat.pack()
+
+
+
+tk.Button(contain,text='計算肌肉量',command=muscle).pack()
 
 contain.mainloop()
