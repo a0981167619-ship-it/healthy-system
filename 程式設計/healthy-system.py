@@ -1,10 +1,11 @@
 import tkinter as tk
+import math
 contain=tk.Tk()
 contain.title('健康計算系統')
-label=tk.Label(text='健康計算系統',fg="#0042f7",font=('標楷體',36))
+label=tk.Label(text='健康計算系統',fg="#002b86",font=('標楷體',36))
 label.pack(side='top')#位置定位為正上方
-label1=tk.Label(text='Health system',font=('標楷體',24))
-label1.place(anchor='nw')#位置定位為左上角
+label1=tk.Label(text='Health system',font=('Great Vibes',24))
+label1.place(x=1750,y=0)#位置定位為左上角
 label2=tk.Label(text='🦀',font=('標楷體',36),fg="#fd5512")
 label2.place(anchor='sw',relx=0,rely=1)#位置定位為左下角
 label3=tk.Label(text='🦀',font=('標楷體',36),fg="#FF1403")
@@ -23,40 +24,6 @@ entry_BMI=tk.Entry(contain)
 def BMI_count(height,weight):#BMI計算
        BMI=weight/(height/100)**2#身高單位換算為公尺
        return BMI
-def TDEE_count(Height,weight,G,):#每日消耗熱量計算
-    height=float(entry_height.get())
-    weight=float(entry_weight.get())
-    BMI=weight/(height/100)**2
-    G=str(entry_gender.get())#輸入性別
-    age=int(entry_age.get())#輸入年齡
-    Height=int(entry_height.get())#身高單位為公分
-    TDEE=str(entry_lifestyle.get())#輸入生活型態
-    if G=='男':
-       man=1.2*BMI+0.23*age-16.2#男性體脂率
-       Man=(10*weight+6.25*Height-5*age+5)#男性基礎代謝率
-       if TDEE=='靜態生活型態':
-          TDEE=Man*1.2
-       elif TDEE=='輕度活動生活型態':
-           TDEE=Man*1.375
-       elif TDEE=='中度活動生活型態':
-            TDEE=Man*1.55
-       elif TDEE=='高度活動生活型態':
-            TDEE=Man*1.725
-       elif TDEE=='極高度活動生活型態':
-            TDEE=Man*1.9
-    elif G=='女':
-        woman=(1.2*BMI+0.23*age)-5.4#女性體脂率
-        Woman=(10*weight+6.25*Height-5*age-161)#女性基礎代謝率
-        if TDEE=='靜態生活型態':
-           TDEE=Woman*1.2
-        elif TDEE=='輕度活動生活型態':
-           TDEE=Woman*1.375
-        elif TDEE=='中度活動生活型態':
-           TDEE=Woman*1.55
-        elif TDEE=='高度活動生活型態':
-            TDEE=Woman*1.725
-        elif TDEE=='極高度活動生活型態':
-            TDEE=Woman*1.9
 
 def WHR_calculate(waist,butt):#腰臀比計算
     WHR=float(waist/butt)
@@ -85,11 +52,11 @@ def water_day(life,weight):#每日喝水量計算:
 def big_heart(well_age,age):#最大心跳率計算:
     well_age=str(entry_agegroup.get())#輸入年齡層
     age=int(entry_age.get())#輸入年齡
-    if well_age=='中年人' or '老年人':
+    if well_age=='中年人' or well_age=='老年人':
         heart=208-(0.7*age)
         return heart
-    else:
-        heart=220-age
+    elif well_age=='青少年':
+         heart=220-age
     return heart
 
 def lose_weight(height,weight,G,age):#去脂體重計算:
@@ -99,27 +66,26 @@ def lose_weight(height,weight,G,age):#去脂體重計算:
     G=str(entry_gender.get())#輸入性別
     age=int(entry_age.get())#輸入年齡
     if G=='男':
-       man=1.2*BMI+0.23*age-16.2#男性體脂率
-       lose_w1=weight-(weight*man)#男性去脂體重計算
+       man=(1.2*BMI+0.23*age-16.2)/100#男性體脂率--數值為百分比
+       lose_w1=weight*(1-man)#男性去脂體重計算
        return lose_w1
     elif G=='女':
-        woman=(1.2*BMI+0.23*age)-5.4#女性體脂率
-        lose_w=weight-(weight*woman)#女性去脂體重計算
+        woman=(1.2*BMI+0.23*age-5.4)/100#女性體脂率
+        lose_w=weight*(1-woman)#女性去脂體重計算
         return lose_w
 
 def everyday_feetlose(weight,height,speed):#每日步數消耗熱量
     weight=float(entry_weight.get())
     height=float(entry_height.get())
-    height=height/100
+    height=height/100#身高單位換算為公尺
     speed=float(entry_speed.get())
-    Height=height/100#身高單位換算為公尺
-    Lcalor=0.035*weight+(speed**2/Height)*0.029*weight#計算消耗熱量
+    Lcalor=0.035*weight+(speed**2/height)*0.029*weight#計算消耗熱量
     return Lcalor
 
 def circle_body(waist,height):#計算身體圓形指數(BRI)
     waist=int(entry_waist.get())#輸入腰圍
     height=float(entry_height.get())
-    BRI=364.2-365.5*((1-waist/2*3.14159)**2/(0.5*height)**2)**(1/2)#計算身體圓形指數(BRI)
+    BRI=364.2-365.5*(math.sqrt(1-(waist/(2*math.pi))**2/(0.5*height)**2))#計算身體圓形指數(BRI)
     return BRI
 
 def muscle_mass(height,weight,age,G):#計算肌肉量:
@@ -129,13 +95,13 @@ def muscle_mass(height,weight,age,G):#計算肌肉量:
       age=int(entry_age.get())#輸入年齡
       G=str(entry_gender.get())#輸入性別
       if G=='男':
-          man=1.2*BMI+0.23*age-16.2#男性體脂率
-          not_fat=weight-(weight*man)#計算無脂肪體重
+          man=(1.2*BMI+0.23*age-16.2)/100#男性體脂率
+          not_fat=weight*(1-man)#計算無脂肪體重
           FFMI=not_fat/(height/100)#計算肌肉量
           return FFMI
       elif G=='女':
-          woman=(1.2*BMI+0.23*age)-5.4#女性體脂率
-          not_fat=weight-(weight*woman)#計算無脂肪體重
+          woman=(1.2*BMI+0.23*age-5.4)/100#女性體脂率
+          not_fat=weight*(1-woman)#計算無脂肪體重
           FFMI=not_fat/(height/100)#計算肌肉量
           return FFMI
 
@@ -161,7 +127,8 @@ def run():#輸出BMI
         BMI_result.config(text='BMI值為:'+'  '+str(round(bmi,2)))
         bmi_result.config(text=text)
         
-    except :
+    except Exception as p:
+        print(p)#查看錯誤
         BMI_result.config(text='請輸入正確數值')
 
 tk.Label(contain,text='身高').pack()
@@ -195,17 +162,18 @@ def ramble():#輸出腰臀比
          elif WHR>=0.86:
             text='健康風險高'
 
-         if G=='男':
+       elif G=='男':
           if WHR<=0.95:
             text='健康風險低'
-         elif 0.96<=WHR<=1.0:
+          elif 0.96<=WHR<=1.0:
             text='健康風險適中'
-         elif WHR>=1.0:
+          elif WHR>=1.0:
             text='健康風險高'
         
-         WHR_result.config(text='腰臀比為:'+ '  '+str(round(WHR,2)))
-         whr_result.config(text=text)
-    except:
+       WHR_result.config(text='腰臀比為:'+ '  '+str(round(WHR,2)))
+       whr_result.config(text=text)
+    except Exception as i:
+         print(i)
          WHR_result.config(text='請輸入正確數值')
 
 tk.Label(contain,text='性別').pack()
@@ -235,7 +203,11 @@ def correct():#輸出每日喝水量
       elif life=='有減重需求'or life=='運動量大':
         water=weight*40
         water_result.config(text='每日喝水量為:'+str(round(water1,2)))
-    except :
+      else:
+         raise ValueError('生活型態輸入錯誤')
+      
+    except Exception as water:
+       print(water)
        water_result.config(text='請輸入正確數值')
 
 tk.Label(contain,text='生活型態').pack()
@@ -255,7 +227,8 @@ def feet_runoutof():#輸出每日步數消耗熱量
       feet=everyday_feetlose(weight,height,speed)
       feet_result.config(text='每日步數消耗熱量為:'+str(round(feet,2)))
       Feet_result.config(text='每日步數消耗熱量為:')
-   except:
+   except Exception as i:
+       print(i)
        feet_result.config(text='請輸入正確數值')
        
 tk.Label(contain,text='速度').pack()
@@ -288,7 +261,8 @@ def circle():#輸出身體圓形指數
 
      circle_result.config(text='身體圓形指數為:'+str(round(circle,2)))
      Circle_result.config(text=text)
-   except:
+   except Exception as i:
+       print(i)
        circle_result.config(text='請輸入正確數值')
 
 circle_result=tk.Label(contain,text='身體圓形指數')
@@ -304,16 +278,10 @@ def large_heart():#輸出最大心率
        well_age=str(entry_agegroup.get())#輸入年齡層
        age=int(entry_age.get())#輸入年齡
        largeheart=big_heart(well_age,age)
-       if well_age=='中年人' or well_age=='老年人':
-        heart=208-(0.7*age)
-        text=heart
-       else:
-         heart=220-age
-         text=heart
-
        large_heart_result.config(text='最大心率為:'+str(largeheart))
        
-    except:
+    except Exception as a:
+       print(a)
        large_heart_result.config(text='請輸入正確數值')
 
 tk.Label(contain,text='年齡層').pack()
@@ -334,15 +302,10 @@ def standard():#輸出標準體重
       G=str(entry_gender.get())
       height=float(entry_height.get())
       normal1=normal_weight(G,height)
-      if G=='男':
-        normal=(height-80)*0.7
-        text=normal
-      elif G=='女':
-        normal=(height-70)*0.6
-        text=normal
       normal_weight_result.config(text='標準體重為:'+str(round(normal1,2)))
 
-   except:
+   except Exception as k:
+      print(k)
       normal_weight_result.config(text='請輸入正確數值')
 
 normal_weight_result=tk.Label(contain,text='標準體重')
@@ -356,60 +319,40 @@ def lost_weight():#輸出去脂體重
       weight=float(entry_weight.get())
       G=str(entry_gender.get())
       age=int(entry_age.get())
-      BMI=float(entry_BMI.get())
-      lost1=lose_weight(height,weight,G,age,BMI)
-      if G=='男':
-       lost=1.2*BMI+0.23*age-16.2
-       text=weight-(weight*lost)
-      elif G=='女':
-        lost=(1.2*BMI+0.23*age)-5.4
-        text=weight-(weight*lost)
+      BMI=weight/(height/100)**2
+      lost=lose_weight(height,weight,G,age)
 
-        lost_weight_result.config(text='去脂體重為:'+str(round(lost1,2)))
+      lost_weight_result.config(text='去脂體重為:'+str(round(lost,2)))
 
-   except:
+   except Exception as i:
+      print(i)
       lost_weight_result.config(text='請輸入正確數值')
 
 lost_weight_result=tk.Label(contain,text='去脂體重')
 lost_weight_result.pack()
 
-tk.Label(contain,text='BMI').place(relx=0.7,rely=0.479)
-entry_BMI=tk.Entry(contain)
-entry_BMI.place(relx=0.7,rely=0.5)
-
 tk.Button(contain,text='計算去脂體重',command=lost_weight).pack()
 
-def muscle():
+def muscle():#輸出肌肉量
    try:
       height=float(entry_height.get())
       weight=float(entry_weight.get())
       BMI=weight/(height/100)**2
       age=int(entry_age.get())
       G=str(entry_gender.get())
-      not_fat=float(entry_not_fat.get())
-      muscle_meat=(height,weight,BMI,age,G)
-      if G=='男':
-          man=1.2*BMI+0.23*age-16.2#男性體脂率
-          not_fat=weight-(weight*man)#計算無脂肪體重
-          text=not_fat/(height/100)#計算肌肉量
-      elif G=='女':
-          woman=(1.2*BMI+0.23*age)-5.4#女性體脂率
-          not_fat=weight-(weight*woman)#計算無脂肪體重
-          text=not_fat/(height/100)#計算肌肉量
-          
-   except:
+      muscle_meat=muscle_mass(height,weight,age,G)
+      muscle_result.config(text='肌肉量:'+str(round(muscle_meat,2)))
+   except Exception as i:
+      print(i)
       muscle_result.config(text='請輸入正確數值')
+          
 
 muscle_result=tk.Label(contain,text='肌肉量')
 muscle_result.pack()
 
-tk.Label(contain,text='去脂體重').pack()
-
-entry_not_fat=tk.Entry(contain)
-entry_not_fat.pack()
-
-
-
 tk.Button(contain,text='計算肌肉量',command=muscle).pack()
 
+label=tk.Label(text='注意事項:\n   1.身高請輸入公分(系統會自動換算為公尺)\n       2.生活型態請輸入一般人/有減重需求/運動量大\n3.年齡層請輸入青少年/中年人/老年人',font=('標楷體',24),fg="#FF0000")
+label.place(anchor='nw')
 contain.mainloop()
+        
