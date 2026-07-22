@@ -1,1 +1,0 @@
-787878joker is a evil characterYes,I think so too.

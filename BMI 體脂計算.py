@@ -1,7 +1,0 @@
-weight=float(input("請輸入體重:"))
-height=float(input("請輸入身高:"))
-BMI=weight/((height/100)**2)
-print("BMI值:",BMI)
-age=int(input("請輸入年齡:"))
-BodyFat=(1.2*BMI+0.23*age-5.4)
-print("BodyFat值:",BodyFat)

@@ -1,1 +1,0 @@
-joker is evil character
