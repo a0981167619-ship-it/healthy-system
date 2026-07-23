@@ -1,0 +1,66 @@
+height=float(input('請輸入身高:'))
+weight=float(input('請輸入體重:'))
+BMI=weight/(height/100)**2
+print('BMI值為:',BMI)
+
+if BMI<18.5:
+    print('體重過輕')
+elif 18.5<=BMI<24:
+    print('健康體重')
+elif 24<=BMI<27:
+    print('過重')
+elif 27<=BMI<30:
+    print('輕度肥胖')
+elif 30<=BMI<35:
+    print('中度肥胖')
+else:
+    print('重度肥胖')
+
+G=input('請輸入性別:')
+age=int(input('請輸入年齡:'))
+Height=int(input('請輸入身高:'))
+TDEE=input('請輸入你的生活型態:')
+if G=='男':
+    man=1.2*BMI+0.23*age-16.2#男性體脂率
+    print('體脂率為:',man)
+
+    Man=(10*weight+6.25*Height-5*age+5)#男性基礎代謝率
+    print('基礎代謝率為:',Man)
+
+    if TDEE=='靜態生活型態':
+       TDEE=Man*1.2
+       print('每日總消耗熱量為:',TDEE)
+    elif TDEE=='輕度活動生活型態':
+        TDEE=Man*1.375
+        print('每日總消耗熱量為:',TDEE)
+    elif TDEE=='中度活動生活型態':
+        TDEE=Man*1.55
+        print('每日總消耗熱量為:',TDEE)
+    elif TDEE=='高度活動生活型態':
+        TDEE=Man*1.725
+        print('每日總消耗熱量為:',TDEE)
+    elif TDEE=='極高度活動生活型態':
+        TDEE=Man*1.9
+        print('每日總消耗熱量為:',TDEE)
+         
+      
+elif G=='女':
+    woman=(1.2*BMI+0.23*age)-5.4#女性體脂率
+    print('體脂率為:',woman)
+    Woman=(10*weight+6.25*Height-5*age-161)#女性基礎代謝率
+    print('基礎代謝率為:',Woman)
+    if TDEE=='靜態生活型態':
+       TDEE=Woman*1.2
+       print('每日總消耗熱量為:',TDEE)
+    elif TDEE=='輕度活動生活型態':
+        TDEE=Woman*1.375
+        print('每日總消耗熱量為:',TDEE)
+    elif TDEE=='中度活動生活型態':
+        TDEE=Woman*1.55
+        print('每日總消耗熱量為:',TDEE)
+    elif TDEE=='高度活動生活型態':
+        TDEE=Woman*1.725
+        print('每日總消耗熱量為:',TDEE)
+    elif TDEE=='極高度活動生活型態':
+        TDEE=Woman*1.9
+        print('每日總消耗熱量為:',TDEE)
