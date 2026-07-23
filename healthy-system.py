@@ -21,6 +21,7 @@ entry_agegroup=tk.Entry(contain)
 entry_speed=tk.Entry(contain)
 entry_not_fat=tk.Entry(contain)
 entry_BMI=tk.Entry(contain)
+entry_life_condition=tk.Entry(contain)
 def BMI_count(height,weight):#BMI計算
        BMI=weight/(height/100)**2#身高單位換算為公尺
        return BMI
@@ -30,28 +31,23 @@ def WHR_calculate(waist,butt):#腰臀比計算
     return WHR
         
 def normal_weight(G,height):#標準體重計算
-    G=str(entry_gender.get())
-    height=float(entry_height.get())#身高單位公分
     if G=='男':
         normal=(height-80)*0.7#男性標準體重計算
     elif G=='女':
         normal=(height-70)*0.6#女性標準體重計算
     return normal
     
-
-def water_day(life,weight):#每日喝水量計算:
-    life=str(entry_lifestyle.get())#輸入生活型態
-    weight=float(entry_weight.get())#體重單位為公斤
+def water_day(life,weight):#每日喝水量計算 #life=輸入生活型態
     if life=='一般人':
         water=weight*30
     elif life=='有減重需求'or life=='運動量大':
         water=weight*40 
+    else:
+       water=0
 
     return water
-
-def big_heart(well_age,age):#最大心跳率計算:
-    well_age=str(entry_agegroup.get())#輸入年齡層
-    age=int(entry_age.get())#輸入年齡
+       
+def big_heart(well_age,age):#最大心跳率計算 #well_age:輸入年齡層 #age:輸入年齡
     if well_age=='中年人' or well_age=='老年人':
         heart=208-(0.7*age)
         return heart
@@ -59,51 +55,53 @@ def big_heart(well_age,age):#最大心跳率計算:
          heart=220-age
     return heart
 
-def lose_weight(height,weight,G,age):#去脂體重計算:
-    height=float(entry_height.get())
-    weight=float(entry_weight.get())
-    BMI=weight/(height/100)**2
-    G=str(entry_gender.get())#輸入性別
-    age=int(entry_age.get())#輸入年齡
-    if G=='男':
+def lose_weight(height,weight,BMI,G,age):#去脂體重計算
+   if G=='男':
        man=(1.2*BMI+0.23*age-16.2)/100#男性體脂率--數值為百分比
        lose_w1=weight*(1-man)#男性去脂體重計算
        return lose_w1
-    elif G=='女':
+   elif G=='女':
         woman=(1.2*BMI+0.23*age-5.4)/100#女性體脂率
         lose_w=weight*(1-woman)#女性去脂體重計算
         return lose_w
 
 def everyday_feetlose(weight,height,speed):#每日步數消耗熱量
-    weight=float(entry_weight.get())
-    height=float(entry_height.get())
-    height=height/100#身高單位換算為公尺
-    speed=float(entry_speed.get())
     Lcalor=0.035*weight+(speed**2/height)*0.029*weight#計算消耗熱量
     return Lcalor
 
-def circle_body(waist,height):#計算身體圓形指數(BRI)
-    waist=int(entry_waist.get())#輸入腰圍
-    height=float(entry_height.get())
+def circle_body(waist,height):#計算身體圓形指數(BRI) #waist:輸入腰圍
     BRI=364.2-365.5*(math.sqrt(1-(waist/(2*math.pi))**2/(0.5*height)**2))#計算身體圓形指數(BRI)
     return BRI
 
-def muscle_mass(height,weight,age,G):#計算肌肉量:
-      height=float(entry_height.get())
-      weight=float(entry_weight.get())
-      BMI=weight/(height/100)**2#身高單位換算為公尺
-      age=int(entry_age.get())#輸入年齡
-      G=str(entry_gender.get())#輸入性別
-      if G=='男':
-          man=(1.2*BMI+0.23*age-16.2)/100#男性體脂率
-          not_fat=weight*(1-man)#計算無脂肪體重
-          FFMI=not_fat/(height/100)#計算肌肉量
-          return FFMI
-      elif G=='女':
-          woman=(1.2*BMI+0.23*age-5.4)/100#女性體脂率
-          not_fat=weight*(1-woman)#計算無脂肪體重
-          FFMI=not_fat/(height/100)#計算肌肉量
-          return FFMI
+def TDEE_count(height,weight,BMI,G,age,TDEE):#每日消耗熱量計算 #TDEE:輸入生活型態
+    if G=='男':
+       man=1.2*BMI+0.23*age-16.2#男性體脂率
+       Man=(10*weight+6.25*height-5*age+5)#男性基礎代謝率
+       if TDEE=='靜態生活型態':
+          TDEE1=Man*1.2
+       elif TDEE=='輕度活動生活型態':
+           TDEE1=Man*1.375
+       elif TDEE=='中度活動生活型態':
+            TDEE1=Man*1.55
+       elif TDEE=='高度活動生活型態':
+            TDEE1=Man*1.725
+       elif TDEE=='極高度活動生活型態':
+            TDEE1=Man*1.9
+       return TDEE1
+    elif G=='女':
+        woman=(1.2*BMI+0.23*age)-5.4#女性體脂率
+        Woman=(10*weight+6.25*height-5*age-161)#女性基礎代謝率
+        if TDEE=='靜態生活型態':
+           TDEE1=Woman*1.2
+        elif TDEE=='輕度活動生活型態':
+           TDEE1=Woman*1.375
+        elif TDEE=='中度活動生活型態':
+           TDEE1=Woman*1.55
+        elif TDEE=='高度活動生活型態':
+            TDEE1=Woman*1.725
+        elif TDEE=='極高度活動生活型態':
+            TDEE1=Woman*1.9
+        return TDEE1
 
 def run():#輸出BMI
     try:
@@ -131,11 +129,11 @@ def run():#輸出BMI
         print(p)#查看錯誤
         BMI_result.config(text='請輸入正確數值')
 
-tk.Label(contain,text='身高').pack()
+tk.Label(contain,text='身高 (cm)').pack()
 entry_height=tk.Entry(contain)
 entry_height.pack()
 
-tk.Label(contain,text='體重').pack()
+tk.Label(contain,text='體重 (kg)').pack()
 entry_weight=tk.Entry(contain)
 entry_weight.pack()
 
@@ -176,13 +174,13 @@ def ramble():#輸出腰臀比
          print(i)
          WHR_result.config(text='請輸入正確數值')
 
-tk.Label(contain,text='性別').pack()
+tk.Label(contain,text='性別(男/女)').pack()
 entry_gender=tk.Entry(contain)
 entry_gender.pack()
-tk.Label(contain,text='腰圍').pack()
+tk.Label(contain,text='腰圍 (cm)').pack()
 entry_waist=tk.Entry(contain)
 entry_waist.pack()
-tk.Label(contain,text='臀圍').pack()
+tk.Label(contain,text='臀圍 (cm)').pack()
 entry_butt=tk.Entry(contain)
 entry_butt.pack()
 WHR_result=tk.Label(contain,text='腰臀比')
@@ -194,7 +192,7 @@ tk.Button(contain,text='計算腰臀比',command=ramble).pack()
 
 def correct():#輸出每日喝水量
     try:
-      life=str(entry_lifestyle.get())#輸入生活型態
+      life=str(entry_life_condition.get())#輸入生活型態
       weight=float(entry_weight.get())#體重單位為公斤
       water1=water_day(life,weight)
       if life=='一般人':
@@ -204,15 +202,15 @@ def correct():#輸出每日喝水量
         water=weight*40
         water_result.config(text='每日喝水量為:'+str(round(water1,2)))
       else:
-         raise ValueError('生活型態輸入錯誤')
+         raise ValueError('生活狀態輸入錯誤')
       
     except Exception as water:
        print(water)
        water_result.config(text='請輸入正確數值')
 
-tk.Label(contain,text='生活型態').pack()
-entry_lifestyle=tk.Entry(contain)
-entry_lifestyle.pack()
+tk.Label(contain,text='生活狀態').pack()
+entry_life_condition=tk.Entry(contain)
+entry_life_condition.pack()
 
 water_result=tk.Label(contain,text='每日喝水量')
 water_result.pack()
@@ -231,7 +229,7 @@ def feet_runoutof():#輸出每日步數消耗熱量
        print(i)
        feet_result.config(text='請輸入正確數值')
        
-tk.Label(contain,text='速度').pack()
+tk.Label(contain,text='速度 (km/h)').pack()
 entry_speed=tk.Entry(contain)
 entry_speed.pack()
 
@@ -320,7 +318,7 @@ def lost_weight():#輸出去脂體重
       G=str(entry_gender.get())
       age=int(entry_age.get())
       BMI=weight/(height/100)**2
-      lost=lose_weight(height,weight,G,age)
+      lost=lose_weight(height,weight,BMI,G,age)
 
       lost_weight_result.config(text='去脂體重為:'+str(round(lost,2)))
 
@@ -333,26 +331,35 @@ lost_weight_result.pack()
 
 tk.Button(contain,text='計算去脂體重',command=lost_weight).pack()
 
-def muscle():#輸出肌肉量
-   try:
-      height=float(entry_height.get())
-      weight=float(entry_weight.get())
-      BMI=weight/(height/100)**2
-      age=int(entry_age.get())
-      G=str(entry_gender.get())
-      muscle_meat=muscle_mass(height,weight,age,G)
-      muscle_result.config(text='肌肉量:'+str(round(muscle_meat,2)))
-   except Exception as i:
-      print(i)
-      muscle_result.config(text='請輸入正確數值')
-          
+def  reduce_cal():
+    try:
+     height=float(entry_height.get())
+     weight=float(entry_weight.get())
+     BMI=weight/(height/100)**2
+     G=str(entry_gender.get())#輸入性別
+     age=int(entry_age.get())#輸入年齡
+     TDEE=str(entry_lifestyle.get())#輸入生活型態
+     T_count=TDEE_count(height,weight,BMI,G,age,TDEE)
 
-muscle_result=tk.Label(contain,text='肌肉量')
-muscle_result.pack()
+     T_count_result.config(text='每日消耗熱量為:'+str(round(T_count,2)))
 
-tk.Button(contain,text='計算肌肉量',command=muscle).pack()
+    except Exception as i:
+       print(i)
+       T_count_result.config(text='請輸入正確數值')
 
-label=tk.Label(text='注意事項:\n   1.身高請輸入公分(系統會自動換算為公尺)\n       2.生活型態請輸入一般人/有減重需求/運動量大\n3.年齡層請輸入青少年/中年人/老年人',font=('標楷體',24),fg="#FF0000")
+
+
+T_count_result=tk.Label(contain,text='每日消耗熱量')
+T_count_result.pack()
+
+tk.Label(contain,text='生活型態').pack()
+entry_lifestyle=tk.Entry(contain)
+entry_lifestyle.pack()
+
+
+tk.Button(contain,text='計算每日消耗熱量',command=reduce_cal).pack()
+
+label=tk.Label(text='注意事項:\n1.生活狀態請輸入一般人/有減重需求/運動量大\n 2.年齡層請輸入青少年/中年人/老年人\n 3.生活型態請輸入靜態生活型態\n/輕度活動生活型態\n/中度活動生活型態\n/高度活動生活型態\n/極高度活動生活型態\n 註:生活狀態≠生活型態',font=('標楷體',24),fg="#FF6B6B")
 label.place(anchor='nw')
 contain.mainloop()
         
